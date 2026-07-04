@@ -12,7 +12,12 @@ CrossLens turns legal documents and live courtroom testimony into a persistent m
 
 </div>
 
-<img width="940" height="499" alt="image" src="https://github.com/user-attachments/assets/268e2990-f1fb-47f4-a804-ff7fb6b19049" /> <img width="940" height="503" alt="image" src="https://github.com/user-attachments/assets/c64bfcaa-6615-4a7e-b8ca-78497f862a00" />
+<table>
+<tr>
+<td width="50%"><img width="100%" alt="CrossLens dashboard" src="https://github.com/user-attachments/assets/268e2990-f1fb-47f4-a804-ff7fb6b19049" /></td>
+<td width="50%"><img width="100%" alt="CrossLens dashboard" src="https://github.com/user-attachments/assets/c64bfcaa-6615-4a7e-b8ca-78497f862a00" /></td>
+</tr>
+</table>
 
 ---
 
