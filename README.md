@@ -199,47 +199,27 @@ Dashboard-->>Attorney: Explainable response
 ```mermaid
 flowchart TD
 
-Upload Documents
+A[Upload Documents]
+B[Document Parsing]
+C[Entity Extraction]
+D["Cognee remember()"]
+E[Memory Graph]
+F[Live Testimony]
+G["Cognee recall()"]
+H[LLM Reasoning]
+I[Contradiction Detection]
+J[Attorney Dashboard]
 
-↓
-
-Document Parsing
-
-↓
-
-Entity Extraction
-
-↓
-
-Cognee remember()
-
-↓
-
-Memory Graph
-
-↓
-
-Live Testimony
-
-↓
-
-Cognee recall()
-
-↓
-
-LLM Reasoning
-
-↓
-
-Contradiction Detection
-
-↓
-
-Attorney Dashboard
+A --> B
+B --> C
+C --> D
+D --> E
+E --> F
+F --> G
+G --> H
+H --> I
+I --> J
 ```
-
----
-
 ## Repository Structure
 
 ```text
