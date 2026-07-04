@@ -1,6 +1,7 @@
 <div align="center">
 
 # CrossLens
+<img width="940" height="499" alt="image" src="https://github.com/user-attachments/assets/268e2990-f1fb-47f4-a804-ff7fb6b19049" />
 
 ### Your Courtroom Never Forgets.
 
