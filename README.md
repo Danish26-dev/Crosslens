@@ -1,222 +1,175 @@
 <div align="center">
 
-# ⚖️ CrossLens
+# CrossLens
 
-### **Your Courtroom Never Forgets.**
+### Your Courtroom Never Forgets.
 
-AI-powered Courtroom Memory Operating System built for the **Hangover Hackathon** using **Cognee**.
+CrossLens is a Courtroom Memory Operating System built for the Hangover Hackathon using Cognee.
 
-CrossLens transforms thousands of pages of legal documents and live courtroom events into a persistent AI memory graph, enabling real-time contradiction detection, evidence tracking, and explainable legal reasoning.
-
----
-
-![Status](https://img.shields.io/badge/Status-MVP-blue)
-![Built With](https://img.shields.io/badge/Built%20With-Cognee-purple)
-![License](https://img.shields.io/badge/License-MIT-green)
+It transforms legal documents and courtroom events into a persistent memory graph, enabling real-time contradiction detection, explainable legal reasoning, and evidence-aware retrieval during live witness examination.
 
 </div>
 
 ---
 
-# 🚨 The Problem
+## Problem
 
-During cross-examination, attorneys often have only a few seconds to challenge a witness.
+During cross-examination, attorneys must remember hundreds of pages of:
 
-However, important information is buried inside:
-
-- Police Reports
 - Depositions
-- Previous Hearing Transcripts
+- Police Reports
+- Hearing Transcripts
 - Affidavits
-- Expert Reports
 - Evidence Logs
+- Witness Statements
 
-Finding contradictions manually takes minutes.
+When a witness contradicts an earlier statement, finding the relevant document and page manually often takes too long, causing valuable impeachment opportunities to be lost.
 
-By the time the correct page is located...
-
-**The opportunity is gone.**
+CrossLens solves this by acting as a persistent courtroom memory system.
 
 ---
 
-# 💡 Our Solution
+## Solution
 
-CrossLens acts as a **Courtroom Memory Operating System**.
+CrossLens continuously remembers the entire case.
 
-Instead of searching PDFs, CrossLens remembers the entire case.
-
-It continuously connects:
+Instead of searching documents, attorneys interact with a living memory graph containing:
 
 - Witnesses
 - Statements
 - Evidence
+- Courtroom Events
 - Locations
 - Timeline
-- Courtroom Events
 
-When a witness gives live testimony, CrossLens instantly retrieves relevant prior statements, detects potential contradictions, and provides exact document citations.
-
----
-
-# ✨ Features
-
-## 🧠 Persistent AI Memory
-
-- Multi-document memory using Cognee
-- Entity relationship graph
-- Timeline reconstruction
-- Long-term contextual recall
+Every response is grounded with citations from the original legal documents.
 
 ---
 
-## ⚠️ Real-time Contradiction Detection
+## Core Features
 
-Compare live testimony against:
+### Persistent Memory
+
+Legal documents are indexed into Cognee to create a connected memory graph.
+
+Supported sources include:
 
 - Depositions
 - Police Reports
-- Previous Hearings
+- Hearing Transcripts
 - Affidavits
-
-Returns:
-
-- Previous Statement
-- Source Document
-- Page Number
-- Line Number
-- Confidence Score
-- Reasoning Trail
+- Evidence Reports
 
 ---
 
-## 📚 Natural Language Q&A
+### Live Contradiction Detection
 
-Ask questions like:
+Compare live testimony against previously stored statements.
 
-> "Who saw Daniel Marshall enter the Blue Lantern Bar?"
+CrossLens returns:
 
-CrossLens answers with precise citations.
-
----
-
-## 📄 Explainable Citations
-
-Every AI response includes:
-
-- Source Document
-- Page
-- Line Number
-- Supporting Evidence
-
-No hallucinations.
+- Contradicting statement
+- Source document
+- Page number
+- Line number
+- Confidence score
+- Reasoning trail
 
 ---
 
-## 🕸 Knowledge Graph
+### Grounded Question Answering
 
-Visual relationships between:
+Ask natural language questions such as:
+
+> Who saw Daniel Marshall enter the Blue Lantern Bar?
+
+Every response includes supporting citations.
+
+---
+
+### Knowledge Graph
+
+Interactive visualization connecting:
 
 - Witnesses
 - Evidence
-- Locations
 - Statements
+- Locations
 - Timeline
+- Documents
 
 ---
 
-## 📅 Timeline Reconstruction
+### Timeline Reconstruction
 
-Chronological reconstruction of the entire case.
-
----
-
-## 📦 Smart Exhibit Tracking
-
-Simulated Raspberry Pi Pico W + RFID system tracks physical courtroom exhibits.
-
-Every exhibit presentation becomes part of the same memory graph.
+Chronological reconstruction of case events from ingestion through courtroom proceedings.
 
 ---
 
-## ⚡ Live Courtroom Events
+### Explainable AI
 
-Real-time activity feed including:
+Every contradiction is accompanied by:
 
-- Witness Sworn
-- Exhibit Presented
-- Evidence Returned
-- Contradictions Found
-- Courtroom Timeline
-
----
-
-# 🧠 How Cognee Powers CrossLens
-
-CrossLens uses **Cognee** as its persistent memory engine.
-
-Instead of treating documents as isolated chunks, Cognee creates a connected memory graph linking:
-
-```
-Witness
-        │
-Statements
-        │
-Evidence
-        │
-Locations
-        │
-Timeline
-        │
-Documents
-```
-
-During live testimony:
-
-1. New statement arrives
-2. Cognee recalls related memories
-3. Contradictions are identified
-4. Source citations are returned
-5. Attorney receives explainable results instantly
+- Previous statement
+- Supporting evidence
+- Source document
+- Page reference
+- Confidence score
 
 ---
 
-# ⚙️ System Architecture
+### Guided Judge Walkthrough
+
+A built-in guided tour demonstrates the complete CrossLens workflow for judges and evaluators.
+
+---
+
+## How Cognee is Used
+
+Cognee acts as the persistent memory layer of CrossLens.
+
+Instead of storing isolated chunks of text, Cognee builds a structured memory graph connecting entities across multiple legal documents.
+
+CrossLens uses the full memory lifecycle:
+
+- `remember()` — ingest legal documents and courtroom events
+- `recall()` — retrieve semantically relevant context during testimony
+- `improve()` — refine memory as additional evidence becomes available
+- `forget()` — remove obsolete or incorrect information when required
+
+This enables long-term contextual reasoning instead of simple document search.
+
+---
+
+## System Architecture
 
 ```mermaid
 flowchart LR
 
 A[Legal Documents]
 B[Live Testimony]
-C[Pi Pico W Simulator]
-D[Backend API]
-E[OpenRouter]
-F[Cognee Memory Graph]
-G[Contradiction Engine]
-H[Knowledge Graph]
-I[Timeline]
-J[Attorney Dashboard]
+C[OpenRouter]
+D[Cognee Memory Graph]
+E[Contradiction Engine]
+F[Knowledge Graph]
+G[Timeline Engine]
+H[Attorney Dashboard]
 
 A --> D
-B --> D
+B --> C
 C --> D
-
 D --> E
 D --> F
+D --> G
 
-E --> G
-F --> G
-
+E --> H
 F --> H
-F --> I
-
-G --> J
-H --> J
-I --> J
+G --> H
 ```
 
 ---
 
-# 🔄 Live Contradiction Flow
+## Live Testimony Flow
 
 ```mermaid
 sequenceDiagram
@@ -226,52 +179,22 @@ participant Dashboard
 participant OpenRouter
 participant Cognee
 
-Attorney->>Dashboard: Live Witness Statement
+Attorney->>Dashboard: Live testimony
 
-Dashboard->>OpenRouter: Analyze Statement
+Dashboard->>OpenRouter: Analyze statement
 
 OpenRouter->>Cognee: recall()
 
-Cognee-->>OpenRouter: Related Statements
+Cognee-->>OpenRouter: Related memories
 
-OpenRouter-->>Dashboard: Contradiction + Citations
+OpenRouter-->>Dashboard: Contradiction + citations
 
-Dashboard-->>Attorney: Explainable Evidence
+Dashboard-->>Attorney: Explainable response
 ```
 
 ---
 
-# 📦 Smart Exhibit Tracking Flow
-
-```mermaid
-sequenceDiagram
-
-participant Clerk
-participant Pico
-participant Backend
-participant Cognee
-participant Dashboard
-
-Clerk->>Pico: Scan Exhibit
-
-Pico->>Backend: POST Courtroom Event
-
-Backend->>Cognee: remember()
-
-Cognee-->>Backend: Memory Updated
-
-Backend-->>Dashboard: Live Event
-
-Dashboard-->>Dashboard: Update Timeline
-
-Dashboard-->>Dashboard: Update Evidence
-
-Dashboard-->>Dashboard: Update Knowledge Graph
-```
-
----
-
-# 🧠 AI Memory Pipeline
+## Memory Pipeline
 
 ```mermaid
 flowchart TD
@@ -280,7 +203,7 @@ Upload Documents
 
 ↓
 
-PDF Parsing
+Document Parsing
 
 ↓
 
@@ -288,23 +211,27 @@ Entity Extraction
 
 ↓
 
-Cognee Memory Graph
+Cognee remember()
 
 ↓
 
-OpenRouter
+Memory Graph
 
 ↓
 
-Semantic Recall
+Live Testimony
+
+↓
+
+Cognee recall()
+
+↓
+
+LLM Reasoning
 
 ↓
 
 Contradiction Detection
-
-↓
-
-Citation Generation
 
 ↓
 
@@ -313,57 +240,70 @@ Attorney Dashboard
 
 ---
 
-# 📂 Project Structure
+## Repository Structure
 
 ```text
-crosslens/
+CrossLens/
 
-├── frontend/
+├── public/
+├── src/
+│   ├── assets/
 │   ├── components/
-│   ├── pages/
-│   ├── layouts/
+│   │   ├── app-sidebar.tsx
+│   │   ├── contradiction-card.tsx
+│   │   ├── witness-graph.tsx
+│   │   ├── case-timeline.tsx
+│   │   ├── evidence-panel.tsx
+│   │   ├── live-transcript.tsx
+│   │   ├── guided-tour.tsx
+│   │   └── ui/
+│   │
 │   ├── hooks/
-│   ├── services/
-│   └── assets/
-│
-├── backend/
-│   ├── controllers/
+│   ├── lib/
+│   │   ├── api/
+│   │   ├── cognee/
+│   │   ├── db/
+│   │   ├── documents/
+│   │   ├── openrouter/
+│   │   ├── mock/
+│   │   └── types/
+│   │
 │   ├── routes/
-│   ├── services/
-│   ├── cognee/
-│   ├── openrouter/
-│   ├── middleware/
-│   └── uploads/
+│   │   ├── dashboard.live.tsx
+│   │   ├── dashboard.ask.tsx
+│   │   ├── dashboard.timeline.tsx
+│   │   ├── dashboard.evidence.tsx
+│   │   ├── dashboard.contradictions.tsx
+│   │   ├── dashboard.memory.tsx
+│   │   └── ...
+│   │
+│   └── scripts/
 │
-├── simulator/
-│   ├── wokwi/
-│   ├── pico-code/
-│   └── diagrams/
-│
-├── shared/
-│
+├── package.json
 └── README.md
 ```
 
 ---
 
-# 🛠 Tech Stack
+## Technology Stack
 
 ### Frontend
 
 - React
 - TypeScript
-- TailwindCSS
-- Vite
+- TanStack Start
+- TanStack Router
+- Tailwind CSS v4
 - shadcn/ui
 - React Flow
 - Framer Motion
+- Vite
 
 ### Backend
 
 - Node.js
-- Express
 - TypeScript
+- TanStack Server Functions
 
 ### AI
 
@@ -373,70 +313,81 @@ crosslens/
 ### Database
 
 - PostgreSQL
-- ChromaDB
 
-### Hardware Simulation
+### Document Processing
 
-- Raspberry Pi Pico W
-- Wokwi
-- OLED Display
-- RFID Simulation
-- Wi-Fi Communication
+- Custom document parser
+- Entity extraction
+- Semantic retrieval
 
 ---
 
-# 🚀 Demo Flow
+## Demo Workflow
 
-1. Upload case documents
-2. Cognee builds a persistent memory graph
-3. Start live witness testimony
-4. Simulate an exhibit scan using the Pico W
-5. Dashboard updates with courtroom events
-6. Witness gives a contradictory statement
-7. CrossLens instantly retrieves:
-   - Previous testimony
-   - Supporting evidence
-   - Source citations
-   - Reasoning trail
+1. Upload legal documents.
+2. CrossLens extracts entities and stores them in Cognee.
+3. A persistent memory graph is created.
+4. Live testimony begins.
+5. Cognee recalls relevant historical statements.
+6. OpenRouter performs contradiction reasoning.
+7. CrossLens presents grounded answers with citations.
+8. Attorneys use the evidence immediately during cross-examination.
 
 ---
 
-# 🔮 Future Roadmap
+## Future Work
 
-- Live Speech-to-Text
-- Court Reporter Integration
-- Multi-case Memory
-- AI Cross-Examination Assistant
-- Automated Case Brief Generation
-- Multi-Courtroom Support
-- Real RFID Hardware Integration
+- Speech-to-Text integration
+- Court reporter integration
+- Live courtroom event ingestion
+- Raspberry Pi Pico W exhibit tracking
+- AI-generated cross-examination suggestions
+- Automatic case brief generation
 
 ---
 
-# 💻 Local Setup
+## Local Development
 
 ```bash
-git clone https://github.com/your-org/crosslens.git
+git clone <repository-url>
 
-cd crosslens
+cd CrossLens
 
 npm install
+
+cp .env.example .env
 
 npm run dev
 ```
 
 ---
 
-# 👥 Team
+## Environment Variables
 
-Built with ❤️ during the **Hangover Hackathon**.
+```env
+COGNEE_API_KEY=
+
+OPENROUTER_API_KEY=
+
+DATABASE_URL=
+
+POSTGRES_USER=
+
+POSTGRES_PASSWORD=
+```
+
+---
+
+## License
+
+MIT
 
 ---
 
 <div align="center">
 
-## ⚖️ CrossLens
+CrossLens
 
-**Because the courtroom shouldn't rely on human memory alone.**
+A courtroom should rely on evidence—not human memory.
 
 </div>
