@@ -4,11 +4,25 @@
 
 ### Your Courtroom Never Forgets.
 
-CrossLens is a Courtroom Memory Operating System built for the Hangover Hackathon using Cognee.
+**A Courtroom Memory Operating System, built for the Hangover Hackathon on Cognee.**
 
-It transforms legal documents and courtroom events into a persistent memory graph, enabling real-time contradiction detection, explainable legal reasoning, and evidence-aware retrieval during live witness examination.
+CrossLens turns legal documents and live courtroom testimony into a persistent memory graph — enabling real-time contradiction detection, explainable legal reasoning, and evidence-aware retrieval during cross-examination.
+
+[Live Demo](#) · [Demo Video](#) · [How Cognee Is Used](#how-cognee-is-used)
 
 </div>
+
+<!--
+  Add a screenshot or GIF of the dashboard here before submitting — e.g.:
+  ![CrossLens dashboard](./docs/screenshot-dashboard.png)
+  This is the single highest-impact addition for a skimming judge.
+-->
+
+---
+
+## Why This Fits the Theme
+
+Attorneys already have "context" — hundreds of pages of it. What they don't have is **memory**: the ability to instantly recall, at the exact moment a witness contradicts themselves, exactly what was said before, where, and how confidently it conflicts. CrossLens is that memory layer — built on Cognee's `remember` → `recall` → `improve` → `forget` lifecycle, not a one-shot document search.
 
 ---
 
@@ -23,9 +37,9 @@ During cross-examination, attorneys must remember hundreds of pages of:
 - Evidence Logs
 - Witness Statements
 
-When a witness contradicts an earlier statement, finding the relevant document and page manually often takes too long, causing valuable impeachment opportunities to be lost.
+When a witness contradicts an earlier statement, finding the relevant document and page manually often takes too long — and the impeachment opportunity is lost.
 
-CrossLens solves this by acting as a persistent courtroom memory system.
+**CrossLens solves this by acting as a persistent courtroom memory system.**
 
 ---
 
@@ -42,102 +56,55 @@ Instead of searching documents, attorneys interact with a living memory graph co
 - Locations
 - Timeline
 
-Every response is grounded with citations from the original legal documents.
+Every response is grounded with citations back to the original legal documents.
 
 ---
 
 ## Core Features
 
 ### Persistent Memory
-
-Legal documents are indexed into Cognee to create a connected memory graph.
-
-Supported sources include:
-
-- Depositions
-- Police Reports
-- Hearing Transcripts
-- Affidavits
-- Evidence Reports
-
----
+Legal documents are indexed into Cognee to build a connected memory graph. Supported sources include depositions, police reports, hearing transcripts, affidavits, and evidence reports.
 
 ### Live Contradiction Detection
-
-Compare live testimony against previously stored statements.
-
-CrossLens returns:
-
+Compares live testimony against everything previously stored. Returns:
 - Contradicting statement
-- Source document
-- Page number
-- Line number
+- Source document, page, and line
 - Confidence score
 - Reasoning trail
 
----
-
 ### Grounded Question Answering
-
-Ask natural language questions such as:
-
-> Who saw Daniel Marshall enter the Blue Lantern Bar?
-
-Every response includes supporting citations.
-
----
+Ask natural-language questions like *"Who saw Daniel Marshall enter the Blue Lantern Bar?"* — every response comes with supporting citations.
 
 ### Knowledge Graph
-
-Interactive visualization connecting:
-
-- Witnesses
-- Evidence
-- Statements
-- Locations
-- Timeline
-- Documents
-
----
+Interactive visualization connecting witnesses, evidence, statements, locations, timeline, and documents.
 
 ### Timeline Reconstruction
-
 Chronological reconstruction of case events from ingestion through courtroom proceedings.
 
----
-
 ### Explainable AI
-
-Every contradiction is accompanied by:
-
-- Previous statement
-- Supporting evidence
-- Source document
-- Page reference
-- Confidence score
-
----
+Every flagged contradiction ships with the prior statement, supporting evidence, source document, page reference, and confidence score — no black-box verdicts.
 
 ### Guided Judge Walkthrough
-
-A built-in guided tour demonstrates the complete CrossLens workflow for judges and evaluators.
+A built-in guided tour demonstrates the complete CrossLens workflow end-to-end for judges and evaluators.
 
 ---
 
-## How Cognee is Used
+## How Cognee Is Used
 
-Cognee acts as the persistent memory layer of CrossLens.
+Cognee is the persistent memory layer of CrossLens. Instead of storing isolated text chunks, it builds a structured memory graph connecting entities across every document in the case.
 
-Instead of storing isolated chunks of text, Cognee builds a structured memory graph connecting entities across multiple legal documents.
+CrossLens uses the **full memory lifecycle**:
 
-CrossLens uses the full memory lifecycle:
+| Primitive | Used for |
+|---|---|
+| `remember()` | Ingesting legal documents and live courtroom events into the graph |
+| `recall()` | Retrieving semantically relevant context the instant testimony comes in |
+| `improve()` | Refining memory as new evidence is added mid-case |
+| `forget()` | Surgically removing obsolete or incorrect information |
 
-- `remember()` — ingest legal documents and courtroom events
-- `recall()` — retrieve semantically relevant context during testimony
-- `improve()` — refine memory as additional evidence becomes available
-- `forget()` — remove obsolete or incorrect information when required
+This is what enables long-term contextual reasoning — instead of just document search, CrossLens reasons over a case the way an attorney's own memory would, if it never degraded.
 
-This enables long-term contextual reasoning instead of simple document search.
+There's also a dedicated **[`/dashboard/memory`](./src/routes/dashboard.memory.tsx)** screen exposing all four primitives directly, so the memory lifecycle isn't buried behind a chat UI — you can see and trigger it.
 
 ---
 
@@ -167,28 +134,28 @@ F --> H
 G --> H
 ```
 
+**Key design choices**
+- **No vendor lock-in in the app layer.** All server logic lives in `createServerFn` RPCs — no proprietary edge functions.
+- **Cognee owns the knowledge graph.** The app never re-implements graph storage or retrieval.
+- **Postgres owns the case record of truth.** Documents, statements, and contradictions are queryable via plain SQL.
+- **OpenRouter is the reasoning layer.** Model choice is a config change, not a code change.
+
 ---
 
 ## Live Testimony Flow
 
 ```mermaid
 sequenceDiagram
-
 participant Attorney
 participant Dashboard
 participant OpenRouter
 participant Cognee
 
 Attorney->>Dashboard: Live testimony
-
 Dashboard->>OpenRouter: Analyze statement
-
 OpenRouter->>Cognee: recall()
-
 Cognee-->>OpenRouter: Related memories
-
 OpenRouter-->>Dashboard: Contradiction + citations
-
 Dashboard-->>Attorney: Explainable response
 ```
 
@@ -220,11 +187,13 @@ G --> H
 H --> I
 I --> J
 ```
+
+---
+
 ## Repository Structure
 
 ```text
-CrossLens/
-
+Crosslens/
 ├── public/
 ├── src/
 │   ├── assets/
@@ -237,17 +206,15 @@ CrossLens/
 │   │   ├── live-transcript.tsx
 │   │   ├── guided-tour.tsx
 │   │   └── ui/
-│   │
 │   ├── hooks/
 │   ├── lib/
-│   │   ├── api/
-│   │   ├── cognee/
+│   │   ├── api/            # createServerFn RPCs
+│   │   ├── cognee/         # remember / recall / improve / forget client
 │   │   ├── db/
 │   │   ├── documents/
 │   │   ├── openrouter/
 │   │   ├── mock/
 │   │   └── types/
-│   │
 │   ├── routes/
 │   │   ├── dashboard.live.tsx
 │   │   ├── dashboard.ask.tsx
@@ -256,9 +223,7 @@ CrossLens/
 │   │   ├── dashboard.contradictions.tsx
 │   │   ├── dashboard.memory.tsx
 │   │   └── ...
-│   │
 │   └── scripts/
-│
 ├── package.json
 └── README.md
 ```
@@ -267,38 +232,13 @@ CrossLens/
 
 ## Technology Stack
 
-### Frontend
-
-- React
-- TypeScript
-- TanStack Start
-- TanStack Router
-- Tailwind CSS v4
-- shadcn/ui
-- React Flow
-- Framer Motion
-- Vite
-
-### Backend
-
-- Node.js
-- TypeScript
-- TanStack Server Functions
-
-### AI
-
-- Cognee
-- OpenRouter
-
-### Database
-
-- PostgreSQL
-
-### Document Processing
-
-- Custom document parser
-- Entity extraction
-- Semantic retrieval
+| Layer | Choice |
+|---|---|
+| Frontend | React 19, TypeScript, TanStack Start/Router, Tailwind CSS v4, shadcn/ui, React Flow, Framer Motion, Vite |
+| Backend | Node.js, TypeScript, TanStack Server Functions |
+| AI / Memory | Cognee, OpenRouter |
+| Database | PostgreSQL |
+| Document Processing | Custom parser, entity extraction, semantic retrieval |
 
 ---
 
@@ -311,13 +251,56 @@ CrossLens/
 5. Cognee recalls relevant historical statements.
 6. OpenRouter performs contradiction reasoning.
 7. CrossLens presents grounded answers with citations.
-8. Attorneys use the evidence immediately during cross-examination.
+8. The attorney uses the evidence immediately during cross-examination.
+
+---
+
+## Local Development
+
+> Requires [Bun](https://bun.sh) — the database scripts below run through it even if you install packages with npm.
+
+```bash
+git clone <repository-url>
+cd Crosslens
+
+# 1. Install
+bun install
+
+# 2. Configure environment
+cp .env.example .env
+# fill in DATABASE_URL, OPENROUTER_API_KEY, COGNEE_API_KEY
+
+# 3. Apply schema and seed the demo case
+bun run db:apply-schema
+bun run db:seed
+
+# 4. Run
+bun run dev          # http://localhost:8080
+```
+
+Production build:
+
+```bash
+bun run build
+bun run preview
+```
+
+---
+
+## Environment Variables
+
+| Variable | Purpose |
+|---|---|
+| `DATABASE_URL` | Postgres connection string (Neon, local Docker, Supabase Pooler, etc.) |
+| `OPENROUTER_API_KEY` | OpenRouter key for contradiction reasoning — [get one here](https://openrouter.ai/keys) |
+| `COGNEE_API_KEY` | API key for the Cognee tenant — [get one here](https://cognee.ai/settings) |
+| `COGNEE_BASE_URL` | *(optional)* Override for self-hosted Cognee; defaults to `https://api.cognee.ai` |
 
 ---
 
 ## Future Work
 
-- Speech-to-Text integration
+- Speech-to-text integration for live courtroom audio
 - Court reporter integration
 - Live courtroom event ingestion
 - Raspberry Pi Pico W exhibit tracking
@@ -326,48 +309,14 @@ CrossLens/
 
 ---
 
-## Local Development
-
-```bash
-git clone <repository-url>
-
-cd CrossLens
-
-npm install
-
-cp .env.example .env
-
-npm run dev
-```
-
----
-
-## Environment Variables
-
-```env
-COGNEE_API_KEY=
-
-OPENROUTER_API_KEY=
-
-DATABASE_URL=
-
-POSTGRES_USER=
-
-POSTGRES_PASSWORD=
-```
-
----
-
 ## License
 
 MIT
 
----
-
 <div align="center">
 
-CrossLens
+---
 
-A courtroom should rely on evidence—not human memory.
+Built with Cognee for the Hangover Hackathon.
 
 </div>
