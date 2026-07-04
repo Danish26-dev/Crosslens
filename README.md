@@ -1,239 +1,442 @@
-# CrossLens
+<div align="center">
 
-> **Your Courtroom Never Forgets.**
-> An AI-powered courtroom memory platform that ingests case files into a
-> knowledge graph, detects contradictions in live testimony, and answers
-> natural-language questions with grounded citations.
+# ⚖️ CrossLens
 
-Built for trial attorneys who cannot afford to miss a prior statement, a
-buried exhibit, or a subtle contradiction across weeks of depositions.
+### **Your Courtroom Never Forgets.**
 
----
+AI-powered Courtroom Memory Operating System built for the **Hangover Hackathon** using **Cognee**.
 
-## Table of contents
-
-1. [What it does](#what-it-does)
-2. [Demo journey](#demo-journey)
-3. [Architecture](#architecture)
-4. [Sequence flows](#sequence-flows)
-5. [Tech stack](#tech-stack)
-6. [Repository layout](#repository-layout)
-7. [Getting started](#getting-started)
-8. [Environment variables](#environment-variables)
+CrossLens transforms thousands of pages of legal documents and live courtroom events into a persistent AI memory graph, enabling real-time contradiction detection, evidence tracking, and explainable legal reasoning.
 
 ---
 
-## What it does
+![Status](https://img.shields.io/badge/Status-MVP-blue)
+![Built With](https://img.shields.io/badge/Built%20With-Cognee-purple)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-| Capability | How it works |
-| --- | --- |
-| **Ingest case files** | Documents (PDF / text) are stored in Postgres and streamed to Cognee, which parses → chunks → embeds → builds a knowledge graph. |
-| **Knowledge graph + timeline** | Entities, witnesses, and events extracted by Cognee are visualised as an interactive graph and chronological timeline. |
-| **Ask CrossLens (grounded Q&A)** | Natural-language questions run through Cognee `GRAPH_COMPLETION` search, returning an answer with numbered source citations. |
-| **Live contradiction detection** | Each live utterance is compared against every prior statement using an OpenRouter LLM; conflicts are returned with confidence, severity, and grounded citation (document, page, line). |
-| **Doc viewer with highlights** | Source documents render inline with extracted entities underlined so the jury exhibit is always one click from the answer. |
+</div>
 
 ---
 
-## Demo journey
+# 🚨 The Problem
 
-The 5-minute judge demo is scripted end-to-end:
+During cross-examination, attorneys often have only a few seconds to challenge a witness.
 
-1. **Landing** → `Try the Demo` armed with a guided tour.
-2. **Case Command Center** → live counts of docs, witnesses, entities, contradictions.
-3. **Ingestion Theatre** (`/dashboard/ingest`) → real Cognee documents animated through the pipeline stages *Uploaded → Parsed → Chunked → Embedded → Graphed*.
-4. **Knowledge Graph** (`/dashboard/evidence`) and **Timeline** (`/dashboard/timeline`) → rendered from Cognee `INSIGHTS` search.
-5. **Contradiction Panel** (`/dashboard/contradictions`) → auto-flagged conflicts between depositions.
-6. **Ask CrossLens** (`/dashboard/ask`) → grounded Q&A with citations and processing latency.
-7. **Doc viewer** (`/dashboard/doc/$id`) → source document with entity highlights.
+However, important information is buried inside:
 
-Fixture fallbacks are wired into every Cognee call so the demo never stalls on stage if the network flinches.
+- Police Reports
+- Depositions
+- Previous Hearing Transcripts
+- Affidavits
+- Expert Reports
+- Evidence Logs
+
+Finding contradictions manually takes minutes.
+
+By the time the correct page is located...
+
+**The opportunity is gone.**
 
 ---
 
-## Architecture
+# 💡 Our Solution
 
-```mermaid
-graph TB
-  subgraph Client["Browser (React 19 + TanStack Router)"]
-    UI[Dashboard UI]
-    Tour[Guided Tour]
-  end
+CrossLens acts as a **Courtroom Memory Operating System**.
 
-  subgraph Server["TanStack Start server functions (Edge / Worker)"]
-    RPC[createServerFn RPCs]
-    Public["/api/public/* routes"]
-  end
+Instead of searching PDFs, CrossLens remembers the entire case.
 
-  subgraph Data["Data & Intelligence"]
-    PG[(PostgreSQL<br/>cases, witnesses,<br/>statements, contradictions)]
-    Cognee[Cognee Cloud<br/>Knowledge Graph + RAG]
-    OR[OpenRouter LLM<br/>contradiction reasoning]
-  end
+It continuously connects:
 
-  UI -->|typed RPC| RPC
-  Tour --> UI
-  RPC -->|SQL| PG
-  RPC -->|X-Api-Key| Cognee
-  RPC -->|chat/completions| OR
-  Public -->|signed webhooks| RPC
+- Witnesses
+- Statements
+- Evidence
+- Locations
+- Timeline
+- Courtroom Events
+
+When a witness gives live testimony, CrossLens instantly retrieves relevant prior statements, detects potential contradictions, and provides exact document citations.
+
+---
+
+# ✨ Features
+
+## 🧠 Persistent AI Memory
+
+- Multi-document memory using Cognee
+- Entity relationship graph
+- Timeline reconstruction
+- Long-term contextual recall
+
+---
+
+## ⚠️ Real-time Contradiction Detection
+
+Compare live testimony against:
+
+- Depositions
+- Police Reports
+- Previous Hearings
+- Affidavits
+
+Returns:
+
+- Previous Statement
+- Source Document
+- Page Number
+- Line Number
+- Confidence Score
+- Reasoning Trail
+
+---
+
+## 📚 Natural Language Q&A
+
+Ask questions like:
+
+> "Who saw Daniel Marshall enter the Blue Lantern Bar?"
+
+CrossLens answers with precise citations.
+
+---
+
+## 📄 Explainable Citations
+
+Every AI response includes:
+
+- Source Document
+- Page
+- Line Number
+- Supporting Evidence
+
+No hallucinations.
+
+---
+
+## 🕸 Knowledge Graph
+
+Visual relationships between:
+
+- Witnesses
+- Evidence
+- Locations
+- Statements
+- Timeline
+
+---
+
+## 📅 Timeline Reconstruction
+
+Chronological reconstruction of the entire case.
+
+---
+
+## 📦 Smart Exhibit Tracking
+
+Simulated Raspberry Pi Pico W + RFID system tracks physical courtroom exhibits.
+
+Every exhibit presentation becomes part of the same memory graph.
+
+---
+
+## ⚡ Live Courtroom Events
+
+Real-time activity feed including:
+
+- Witness Sworn
+- Exhibit Presented
+- Evidence Returned
+- Contradictions Found
+- Courtroom Timeline
+
+---
+
+# 🧠 How Cognee Powers CrossLens
+
+CrossLens uses **Cognee** as its persistent memory engine.
+
+Instead of treating documents as isolated chunks, Cognee creates a connected memory graph linking:
+
+```
+Witness
+        │
+Statements
+        │
+Evidence
+        │
+Locations
+        │
+Timeline
+        │
+Documents
 ```
 
-**Key design choices**
+During live testimony:
 
-- **No vendor lock-in in the app layer.** All server logic lives in
-  `createServerFn` RPCs. There are no proprietary edge functions.
-- **Cognee owns the knowledge graph.** The app never re-implements graph
-  storage or retrieval — it delegates ingest, search, and completion.
-- **Postgres owns the case record of truth.** Documents, statements, and
-  contradictions are queryable via plain SQL, portable to any provider.
-- **OpenRouter is the reasoning layer.** Model choice is a config change,
-  not a code change.
+1. New statement arrives
+2. Cognee recalls related memories
+3. Contradictions are identified
+4. Source citations are returned
+5. Attorney receives explainable results instantly
 
 ---
 
-## Sequence flows
+# ⚙️ System Architecture
 
-### 1. Document ingestion
+```mermaid
+flowchart LR
+
+A[Legal Documents]
+B[Live Testimony]
+C[Pi Pico W Simulator]
+D[Backend API]
+E[OpenRouter]
+F[Cognee Memory Graph]
+G[Contradiction Engine]
+H[Knowledge Graph]
+I[Timeline]
+J[Attorney Dashboard]
+
+A --> D
+B --> D
+C --> D
+
+D --> E
+D --> F
+
+E --> G
+F --> G
+
+F --> H
+F --> I
+
+G --> J
+H --> J
+I --> J
+```
+
+---
+
+# 🔄 Live Contradiction Flow
 
 ```mermaid
 sequenceDiagram
-  participant U as User
-  participant UI as Dashboard
-  participant SF as Server Fn (uploadDocument)
-  participant PG as Postgres
-  participant CG as Cognee
 
-  U->>UI: Drop PDF / text file
-  UI->>SF: FormData(file)
-  SF->>PG: INSERT documents (status=pending)
-  SF->>CG: POST /add (dataset=crosslens)
-  CG-->>SF: dataset_id
-  SF->>CG: POST /cognify (build graph)
-  CG-->>SF: pipeline started
-  SF->>PG: UPDATE documents SET status=graphed
-  SF-->>UI: { docId, status }
-  UI->>UI: Ingestion Theatre animates stages
+participant Attorney
+participant Dashboard
+participant OpenRouter
+participant Cognee
+
+Attorney->>Dashboard: Live Witness Statement
+
+Dashboard->>OpenRouter: Analyze Statement
+
+OpenRouter->>Cognee: recall()
+
+Cognee-->>OpenRouter: Related Statements
+
+OpenRouter-->>Dashboard: Contradiction + Citations
+
+Dashboard-->>Attorney: Explainable Evidence
 ```
 
-### 2. Ask CrossLens (grounded Q&A)
+---
+
+# 📦 Smart Exhibit Tracking Flow
 
 ```mermaid
 sequenceDiagram
-  participant U as User
-  participant UI as Ask page
-  participant SF as askCrossLensFn
-  participant CG as Cognee
 
-  U->>UI: "Where was the witness at 21:15?"
-  UI->>SF: { query }
-  SF->>CG: POST /search { type: GRAPH_COMPLETION }
-  CG-->>SF: { answer, nodes[], edges[], sources[] }
-  SF-->>UI: { answer, citations[], latencyMs }
-  UI->>UI: Render answer + numbered citations
-  U->>UI: Click citation
-  UI->>UI: Navigate to /dashboard/doc/$id with highlight
+participant Clerk
+participant Pico
+participant Backend
+participant Cognee
+participant Dashboard
+
+Clerk->>Pico: Scan Exhibit
+
+Pico->>Backend: POST Courtroom Event
+
+Backend->>Cognee: remember()
+
+Cognee-->>Backend: Memory Updated
+
+Backend-->>Dashboard: Live Event
+
+Dashboard-->>Dashboard: Update Timeline
+
+Dashboard-->>Dashboard: Update Evidence
+
+Dashboard-->>Dashboard: Update Knowledge Graph
 ```
 
-### 3. Live contradiction detection
+---
+
+# 🧠 AI Memory Pipeline
 
 ```mermaid
-sequenceDiagram
-  participant W as Witness (live)
-  participant UI as Live Transcript
-  participant SF as submitTestimony
-  participant PG as Postgres
-  participant OR as OpenRouter
+flowchart TD
 
-  W->>UI: Utterance ("I was home all evening")
-  UI->>SF: { utterance }
-  SF->>PG: SELECT prior statements for witness
-  SF->>OR: chat.completions (utterance vs history)
-  OR-->>SF: { conflict, confidence, reason, citation }
-  SF->>PG: INSERT contradiction
-  SF-->>UI: Contradiction card
-  UI->>UI: Flash alert + link to source line
+Upload Documents
+
+↓
+
+PDF Parsing
+
+↓
+
+Entity Extraction
+
+↓
+
+Cognee Memory Graph
+
+↓
+
+OpenRouter
+
+↓
+
+Semantic Recall
+
+↓
+
+Contradiction Detection
+
+↓
+
+Citation Generation
+
+↓
+
+Attorney Dashboard
 ```
 
 ---
 
-## Tech stack
+# 📂 Project Structure
 
-| Layer | Choice |
-| --- | --- |
-| Framework | TanStack Start v1 (React 19, SSR, server functions) |
-| Build / bundler | Vite 7 |
-| Styling | Tailwind CSS v4, shadcn/ui, Framer Motion |
-| Data | PostgreSQL via `postgres` driver (Neon-compatible) |
-| Knowledge graph / RAG | Cognee Cloud (`/add`, `/cognify`, `/search`) |
-| LLM reasoning | OpenRouter |
-| 3D visuals | react-three-fiber, drei |
-| Graph UI | React Flow |
+```text
+crosslens/
 
----
-
-## Repository layout
-
-```
-src/
-├── routes/                  # File-based routing (TanStack Router)
-│   ├── __root.tsx           # App shell (head, providers)
-│   ├── index.tsx            # Landing page
-│   ├── dashboard.*.tsx      # Case command center, ingest, ask, etc.
-│   └── api/public/          # Signed public HTTP endpoints
-├── components/              # UI + domain components
-│   ├── guided-tour.tsx      # Judge-facing walkthrough
-│   ├── witness-graph.tsx    # React Flow graph
-│   └── ui/                  # shadcn/ui primitives
-├── lib/
-│   ├── api/                 # Server functions (createServerFn RPCs)
-│   ├── cognee/              # Cognee client + demo layer
-│   ├── openrouter/          # LLM client
-│   ├── db/                  # Postgres pool, schema, seed
-│   └── types/               # Shared TS types
-└── styles.css               # Tailwind v4 tokens
+├── frontend/
+│   ├── components/
+│   ├── pages/
+│   ├── layouts/
+│   ├── hooks/
+│   ├── services/
+│   └── assets/
+│
+├── backend/
+│   ├── controllers/
+│   ├── routes/
+│   ├── services/
+│   ├── cognee/
+│   ├── openrouter/
+│   ├── middleware/
+│   └── uploads/
+│
+├── simulator/
+│   ├── wokwi/
+│   ├── pico-code/
+│   └── diagrams/
+│
+├── shared/
+│
+└── README.md
 ```
 
 ---
 
-## Getting started
+# 🛠 Tech Stack
+
+### Frontend
+
+- React
+- TypeScript
+- TailwindCSS
+- Vite
+- shadcn/ui
+- React Flow
+- Framer Motion
+
+### Backend
+
+- Node.js
+- Express
+- TypeScript
+
+### AI
+
+- Cognee
+- OpenRouter
+
+### Database
+
+- PostgreSQL
+- ChromaDB
+
+### Hardware Simulation
+
+- Raspberry Pi Pico W
+- Wokwi
+- OLED Display
+- RFID Simulation
+- Wi-Fi Communication
+
+---
+
+# 🚀 Demo Flow
+
+1. Upload case documents
+2. Cognee builds a persistent memory graph
+3. Start live witness testimony
+4. Simulate an exhibit scan using the Pico W
+5. Dashboard updates with courtroom events
+6. Witness gives a contradictory statement
+7. CrossLens instantly retrieves:
+   - Previous testimony
+   - Supporting evidence
+   - Source citations
+   - Reasoning trail
+
+---
+
+# 🔮 Future Roadmap
+
+- Live Speech-to-Text
+- Court Reporter Integration
+- Multi-case Memory
+- AI Cross-Examination Assistant
+- Automated Case Brief Generation
+- Multi-Courtroom Support
+- Real RFID Hardware Integration
+
+---
+
+# 💻 Local Setup
 
 ```bash
-# 1. Install
-bun install
+git clone https://github.com/your-org/crosslens.git
 
-# 2. Configure environment
-cp .env.example .env
-# fill DATABASE_URL, OPENROUTER_API_KEY, COGNEE_API_KEY, COGNEE_BASE_URL
+cd crosslens
 
-# 3. Apply schema and seed the demo case
-bun run db:apply-schema
-bun run db:seed
+npm install
 
-# 4. Run
-bun run dev          # http://localhost:8080
-```
-
-Production build:
-
-```bash
-bun run build
-bun run preview
+npm run dev
 ```
 
 ---
 
-## Environment variables
+# 👥 Team
 
-| Variable | Purpose |
-| --- | --- |
-| `DATABASE_URL` | Postgres connection string (Neon, RDS, local). |
-| `COGNEE_API_KEY` | API key for the Cognee tenant. |
-| `COGNEE_BASE_URL` | Cognee tenant URL, e.g. `https://tenant-xxx.aws.cognee.ai`. |
-| `OPENROUTER_API_KEY` | OpenRouter key for contradiction reasoning. |
+Built with ❤️ during the **Hangover Hackathon**.
 
 ---
 
-## License
+<div align="center">
 
-Prepared for hackathon evaluation. All rights reserved by the CrossLens team.
+## ⚖️ CrossLens
+
+**Because the courtroom shouldn't rely on human memory alone.**
+
+</div>
