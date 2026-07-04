@@ -1,7 +1,6 @@
 <div align="center">
 
 # CrossLens
-<img width="940" height="499" alt="image" src="https://github.com/user-attachments/assets/268e2990-f1fb-47f4-a804-ff7fb6b19049" />
 
 ### Your Courtroom Never Forgets.
 
@@ -13,11 +12,7 @@ CrossLens turns legal documents and live courtroom testimony into a persistent m
 
 </div>
 
-<!--
-  Add a screenshot or GIF of the dashboard here before submitting — e.g.:
-  ![CrossLens dashboard](./docs/screenshot-dashboard.png)
-  This is the single highest-impact addition for a skimming judge.
--->
+<img width="940" height="499" alt="image" src="https://github.com/user-attachments/assets/268e2990-f1fb-47f4-a804-ff7fb6b19049" /> <img width="940" height="503" alt="image" src="https://github.com/user-attachments/assets/c64bfcaa-6615-4a7e-b8ca-78497f862a00" />
 
 ---
 
